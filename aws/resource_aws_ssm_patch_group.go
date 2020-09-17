@@ -43,7 +43,7 @@ func resourceAwsSsmPatchGroupCreate(d *schema.ResourceData, meta interface{}) er
 		return err
 	}
 
-	d.SetId(*resp.PatchGroup)
+	d.SetId(fmt.Sprintf("%s:%s", *resp.PatchGroup, *resp.BaselineId))
 	return resourceAwsSsmPatchGroupRead(d, meta)
 }
 
@@ -52,19 +52,22 @@ func resourceAwsSsmPatchGroupRead(d *schema.ResourceData, meta interface{}) erro
 
 	params := &ssm.DescribePatchGroupsInput{}
 
-	resp, err := ssmconn.DescribePatchGroups(params)
+	found := false
+	err := ssmconn.DescribePatchGroupsPages(params, func(page *ssm.DescribePatchGroupsOutput, lastPage bool) bool {
+		for _, t := range page.Mappings {
+			if fmt.Sprintf("%s:%s", *t.PatchGroup, *t.BaselineIdentity.BaselineId) == d.Id() {
+				found = true
+
+				d.Set("patch_group", t.PatchGroup)
+				d.Set("baseline_id", t.BaselineIdentity.BaselineId)
+				break
+			}
+		}
+		return true
+	})
+
 	if err != nil {
 		return err
-	}
-
-	found := false
-	for _, t := range resp.Mappings {
-		if *t.PatchGroup == d.Id() {
-			found = true
-
-			d.Set("patch_group", t.PatchGroup)
-			d.Set("baseline_id", t.BaselineIdentity.BaselineId)
-		}
 	}
 
 	if !found {
