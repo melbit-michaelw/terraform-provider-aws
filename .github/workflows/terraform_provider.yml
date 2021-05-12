@@ -34,7 +34,7 @@ jobs:
     name: go mod download
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v2.3.4
     - uses: actions/setup-go@v2
       with:
         go-version: ${{ env.GO_VERSION }}
@@ -53,7 +53,7 @@ jobs:
     needs: [go_mod_download]
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v2.3.4
     - uses: actions/cache@v2
       continue-on-error: true
       id: cache-terraform-plugin-dir
@@ -88,7 +88,7 @@ jobs:
     needs: [go_build]
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v2.3.4
     - uses: actions/cache@v2
       continue-on-error: true
       id: cache-terraform-providers-schema
@@ -123,7 +123,7 @@ jobs:
     needs: [go_build]
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v2.3.4
     - uses: actions/setup-go@v2
       with:
         go-version: ${{ env.GO_VERSION }}
@@ -151,7 +151,7 @@ jobs:
     needs: [go_build]
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v2.3.4
     - uses: actions/setup-go@v2
       with:
         go-version: ${{ env.GO_VERSION }}
@@ -181,7 +181,7 @@ jobs:
     needs: [go_build]
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v2.3.4
     - uses: actions/setup-go@v2
       with:
         go-version: ${{ env.GO_VERSION }}
@@ -206,7 +206,7 @@ jobs:
     needs: [go_build]
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v2.3.4
     - uses: actions/setup-go@v2
       with:
         go-version: ${{ env.GO_VERSION }}
@@ -233,7 +233,7 @@ jobs:
     needs: [go_mod_download]
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v2.3.4
       - uses: actions/setup-go@v2
         with:
           go-version: ${{ env.GO_VERSION }}
@@ -256,7 +256,7 @@ jobs:
   semgrep:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v2.3.4
       with:
        fetch-depth: 0
     - name: semgrep
@@ -266,7 +266,7 @@ jobs:
     needs: [terraform_providers_schema]
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v2.3.4
     - uses: actions/setup-go@v2
       with:
         go-version: ${{ env.GO_VERSION }}
